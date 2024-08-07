@@ -10,7 +10,7 @@ const OnboardScreen = () => {
     <SafeAreaView className="bg-primary h-full">
       <ScrollView
         contentContainerStyle={{
-          minHeight:'100%',
+          minHeight: "100%",
           justifyContent: "center",
           alignItems: "center",
         }}
