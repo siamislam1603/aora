@@ -18,6 +18,9 @@ module.exports = {
         gray: {
           100: "#CDCDE0",
         },
+        white: {
+          DEFAULT: "#FFFFFF",
+        },
       },
       fontFamily: {
         pthin: ["Poppins-Thin", "sans-serif"],

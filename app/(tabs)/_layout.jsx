@@ -4,7 +4,7 @@ import { Image, Text, View } from "react-native";
 
 const tabs = [
   {
-    name: "index",
+    name: "home",
     title: "Home",
     image: require("../../assets/icons/home.png"),
   },
