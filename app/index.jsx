@@ -1,3 +1,4 @@
+import { router } from "expo-router";
 import React from "react";
 import { Image, ScrollView, Text, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
@@ -9,12 +10,12 @@ const OnboardScreen = () => {
     <SafeAreaView className="bg-primary h-full">
       <ScrollView
         contentContainerStyle={{
-          height: "100%",
+          minHeight:'100%',
           justifyContent: "center",
           alignItems: "center",
         }}
       >
-        <View className="w-full min-h-[85vh] items-center justify-center gap-y-5 px-3">
+        <View className="w-full min-h-[85vh] items-center justify-center gap-y-5 px-3 py-4">
           <Image
             source={images.logo}
             resizeMode="contain"
@@ -43,7 +44,7 @@ const OnboardScreen = () => {
           <CustomButton
             title="Continue with Email"
             buttonStyle="w-full"
-            handlePress={() => console.log("button pressed")}
+            handlePress={() => router.push("/sign-in")}
           />
         </View>
       </ScrollView>
