@@ -4,3 +4,11 @@ export const signInSchema = {
   email: yup.string().email().required(),
   password: yup.string().min(5).required(),
 };
+
+export const signUpSchema = {
+  ...signInSchema,
+  username: yup.string().min(2).required(),
+  passwordConfirmation: yup
+    .string()
+    .oneOf([yup.ref("password"), null], "passwords must match"),
+};

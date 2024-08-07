@@ -8,15 +8,17 @@ import * as yup from "yup";
 import CustomButton from "../../components/CustomButton";
 import CustomTextInput from "../../components/form-inputs/CustomTextInput";
 import { images } from "../../constants";
-import { signInSchema } from "../../validations";
+import { signUpSchema } from "../../validations";
 
 const defaultValues = {
   email: "",
   password: "",
+  username: "",
+  passwordConfirmation: "",
 };
-const SignInScreen = () => {
+const SignUpScreen = () => {
   const formHook = useForm({
-    resolver: yupResolver(yup.object(signInSchema)),
+    resolver: yupResolver(yup.object(signUpSchema)),
     defaultValues,
   });
   const {
@@ -45,9 +47,17 @@ const SignInScreen = () => {
             className="w-[115px] h-[34px]"
           />
           <Text className="font-psemibold text-2xl text-white py-5">
-            Sign in
+            Sign up
           </Text>
           <View className="space-y-6">
+            <View>
+              <CustomTextInput
+                label="Username"
+                {...formHook}
+                name="username"
+                placeholder="Your username"
+              />
+            </View>
             <View>
               <CustomTextInput
                 label="Email"
@@ -66,21 +76,24 @@ const SignInScreen = () => {
                 type="password"
               />
             </View>
-            <Link
-              href="/"
-              className="text-gray-100 text-right text-sm font-pregular"
-            >
-              Forgot password?
-            </Link>
+            <View>
+              <CustomTextInput
+                label="Confirm password"
+                {...formHook}
+                name="passwordConfirmation"
+                placeholder="Retype password"
+                type="password"
+              />
+            </View>
             <CustomButton
-              title="Log In"
+              title="Sign Up"
               isLoading={isSubmitting}
               handlePress={handleSubmit(handleFormSubmit)}
             />
             <Text className="font-pregular text-sm text-gray-100 text-center">
-              Don't have an account?{" "}
-              <Link href="/sign-up" className="text-secondary font-psemibold">
-                Signup
+              Already have an account?{" "}
+              <Link href="/sign-in" className="text-secondary font-psemibold">
+                Login
               </Link>
             </Text>
           </View>
@@ -90,4 +103,4 @@ const SignInScreen = () => {
   );
 };
 
-export default SignInScreen;
+export default SignUpScreen;
