@@ -33,6 +33,7 @@ const SignUpScreen = () => {
       Alert.alert("Success", "Signed-in successfully.");
       router.replace("/home");
     } catch (error) {
+      console.log(error)
       Alert.alert("Error", error?.response?.data?.message);
     }
   };

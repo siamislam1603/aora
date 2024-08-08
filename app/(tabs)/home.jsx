@@ -1,11 +1,25 @@
 import React from "react";
-import { Text, View } from "react-native";
+import { FlatList } from "react-native";
+import { SafeAreaView } from "react-native-safe-area-context";
+import Header from "../../components/Home/Header";
+import NoEmptyList from "../../components/NoEmptyList";
 
 const HomePage = () => {
   return (
-    <View className="flex-1 items-center justify-center">
-      <Text className="text-3xl font-pbold">HomePage</Text>
-    </View>
+    <SafeAreaView className="h-full bg-primary p-4">
+      <FlatList
+        data={[]}
+        ListEmptyComponent={() => (
+          <NoEmptyList
+            title="No Videos Found"
+            subtitle="Be first to create new video"
+            buttonText="+ Add Video"
+            buttonHref="/create"
+          />
+        )}
+        ListHeaderComponent={() => <Header />}
+      />
+    </SafeAreaView>
   );
 };
 

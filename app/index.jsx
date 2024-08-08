@@ -1,11 +1,15 @@
-import { router } from "expo-router";
+import { Redirect, router } from "expo-router";
 import React from "react";
 import { Image, ScrollView, Text, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import CustomButton from "../components/CustomButton";
 import { images } from "../constants";
+import { useAuth } from "../contexts/GlobalContextProvider";
 
 const OnboardScreen = () => {
+  const { isLoggedIn } = useAuth();
+
+  if (isLoggedIn) return <Redirect href="/home" />;
   return (
     <SafeAreaView className="bg-primary h-full">
       <ScrollView

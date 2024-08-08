@@ -1,7 +1,7 @@
 import { useFonts } from "expo-font";
 import { SplashScreen, Stack } from "expo-router";
-import { StatusBar } from "expo-status-bar";
 import { useEffect } from "react";
+import GlobalContextProvider from "../contexts/GlobalContextProvider";
 
 // Keep the splash screen visible while we fetch resources
 SplashScreen.preventAutoHideAsync();
@@ -32,13 +32,13 @@ const RootLayout = () => {
   }
 
   return (
-    <>
+    <GlobalContextProvider>
       <Stack>
         <Stack.Screen name="index" options={{ headerShown: false }} />
         <Stack.Screen name="(auth)" options={{ headerShown: false }} />
+        <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
       </Stack>
-      <StatusBar style="light" backgroundColor="#161622" />
-    </>
+    </GlobalContextProvider>
   );
 };
 
