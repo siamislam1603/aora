@@ -5,7 +5,16 @@ import { icons } from "../../constants";
 import FormInputWrapper from "./FormInputWrapper";
 
 const InputRender = (props) => {
-  const { placeholder, type, keyboardType, onBlur, onChangeText } = props;
+  const {
+    placeholder,
+    type,
+    keyboardType,
+    onBlur,
+    onChangeText,
+    value,
+    defaultValue,
+    showPassword,
+  } = props;
   return (
     <TextInput
       placeholder={placeholder}
@@ -59,12 +68,13 @@ const CustomTextInput = (props) => {
                   await trigger(name);
                 }}
                 value={value}
+                showPassword={showPassword}
               />
             );
           }}
         />
       ) : (
-        <InputRender {...props} />
+        <InputRender {...props} showPassword={showPassword} />
       )}
       {type === "password" && (
         <InputAdornment

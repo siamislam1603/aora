@@ -1,13 +1,14 @@
 import { yupResolver } from "@hookform/resolvers/yup";
-import { Link } from "expo-router";
+import { Link, router } from "expo-router";
 import React from "react";
 import { useForm } from "react-hook-form";
-import { Image, ScrollView, Text, View } from "react-native";
+import { Alert, Image, ScrollView, Text, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import * as yup from "yup";
 import CustomButton from "../../components/CustomButton";
 import CustomTextInput from "../../components/form-inputs/CustomTextInput";
 import { images } from "../../constants";
+import { signIn } from "../../lib/appwrite";
 import { signInSchema } from "../../validations";
 
 const defaultValues = {
@@ -24,9 +25,14 @@ const SignInScreen = () => {
     formState: { isSubmitting },
   } = formHook;
 
-  const handleFormSubmit = async (reqPayload) => {
-    await new Promise((resolve) => setTimeout(() => resolve("first"), 2000));
-    console.log(reqPayload);
+  const handleFormSubmit = async ({ email, password }) => {
+    try {
+      await signIn(email, password);
+      Alert.alert("Success", "Signed-in successfully.");
+      router.replace("/home");
+    } catch (error) {
+      Alert.alert("Error", "Invalid credentials");
+    }
   };
 
   return (

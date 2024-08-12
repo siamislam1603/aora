@@ -1,26 +1,24 @@
-import React, { useEffect, useState } from "react";
+import { useQuery } from "@tanstack/react-query";
+import React, { createContext } from "react";
 import { FlatList } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import Header from "../../components/Home/Header";
 import VideoCard from "../../components/Home/VideoCard";
+import LoadingScreen from "../../components/LoadingScreen";
 import NoEmptyList from "../../components/NoEmptyList";
 import { getPopularVideos } from "../../lib/appwrite";
 
+export const HomeContext = createContext();
 const HomePage = () => {
-  const [videos, setVideos] = useState([]);
-  useEffect(() => {
-    const fetchVideos = async () => {
-      try {
-        const videos = await getPopularVideos();
-        setVideos(videos);
-      } catch (error) {
-        console.log(error);
-      }
-    };
-    fetchVideos();
-  }, []);
+  const { data: videos, isLoading } = useQuery({
+    queryKey: ["videos"],
+    queryFn: getPopularVideos,
+  });
+
+  if (isLoading) return <LoadingScreen hideLogo={true} />;
+
   return (
-    <SafeAreaView className="h-full bg-primary p-4">
+    <SafeAreaView className="h-full bg-primary">
       <FlatList
         data={videos}
         keyExtractor={(item) => item.$id}
@@ -33,7 +31,7 @@ const HomePage = () => {
           />
         )}
         renderItem={({ item }) => <VideoCard {...item} />}
-        ListHeaderComponent={() => <Header />}
+        ListHeaderComponent={() => <Header videos={videos} />}
         contentContainerStyle={{ gap: 20 }}
       />
     </SafeAreaView>

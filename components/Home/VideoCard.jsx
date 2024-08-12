@@ -18,7 +18,7 @@ const VideoCard = ({
 }) => {
   const [isPlaying, setIsPlaying] = useState(false);
   return (
-    <View className="space-y-5">
+    <View className="space-y-5 px-4">
       <View className="flex-row items-start space-x-5">
         <View className="flex-row flex-1 items-center space-x-3">
           <View className="relative w-12 h-12 border-2 border-secondary-100 rounded-lg">
