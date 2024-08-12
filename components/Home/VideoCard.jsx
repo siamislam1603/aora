@@ -1,4 +1,5 @@
-import React from "react";
+import { ResizeMode, Video } from "expo-av";
+import React, { useState } from "react";
 import {
   Image,
   ImageBackground,
@@ -15,7 +16,7 @@ const VideoCard = ({
   video,
   creator: { avatar, username },
 }) => {
-  console.log(avatar);
+  const [isPlaying, setIsPlaying] = useState(false);
   return (
     <View className="space-y-5">
       <View className="flex-row items-start space-x-5">
@@ -40,20 +41,38 @@ const VideoCard = ({
           <Image source={icons.menu} resizeMode="contain" className="w-6 h-5" />
         </TouchableOpacity>
       </View>
-      <ImageBackground
-        source={{ uri: thumbnail }}
-        resizeMode="cover"
-        className="w-full h-52 rounded-lg relative"
-        borderRadius={12}
-      >
-        <TouchableOpacity className="absolute w-full h-full flex items-center justify-center">
-          <Image
-            source={icons.play}
-            resizeMode="contain"
-            className="w-14 h-14"
-          />
-        </TouchableOpacity>
-      </ImageBackground>
+      {!isPlaying && (
+        <ImageBackground
+          source={{ uri: thumbnail }}
+          resizeMode="cover"
+          className="w-full h-52 rounded-lg relative"
+          borderRadius={12}
+        >
+          <TouchableOpacity
+            className="absolute w-full h-full flex items-center justify-center"
+            onPress={() => setIsPlaying(!isPlaying)}
+          >
+            <Image
+              source={icons.play}
+              resizeMode="contain"
+              className="w-14 h-14"
+            />
+          </TouchableOpacity>
+        </ImageBackground>
+      )}
+      <Video
+        source={{
+          uri: video,
+        }}
+        useNativeControls
+        resizeMode={ResizeMode.CONTAIN}
+        shouldPlay={isPlaying}
+        isLooping
+        className={isPlaying ? `h-52 w-full rounded-lg` : ""}
+        onPlaybackStatusUpdate={(status) => {
+          if (status.didJustFinish) setIsPlaying(!isPlaying);
+        }}
+      />
     </View>
   );
 };
