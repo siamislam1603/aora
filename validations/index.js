@@ -12,3 +12,7 @@ export const signUpSchema = {
     .string()
     .oneOf([yup.ref("password"), null], "passwords must match"),
 };
+
+export const searchSchema = {
+  searchValue: yup.string().min(1).required(),
+};
