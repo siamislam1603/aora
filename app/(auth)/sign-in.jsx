@@ -8,7 +8,8 @@ import * as yup from "yup";
 import CustomButton from "../../components/CustomButton";
 import CustomTextInput from "../../components/form-inputs/CustomTextInput";
 import { images } from "../../constants";
-import { signIn } from "../../lib/appwrite";
+import { useAuth } from "../../contexts/GlobalContextProvider";
+import { getCurrentUser, signIn } from "../../lib/appwrite";
 import { signInSchema } from "../../validations";
 
 const defaultValues = {
@@ -20,6 +21,7 @@ const SignInScreen = () => {
     resolver: yupResolver(yup.object(signInSchema)),
     defaultValues,
   });
+  const { setUser, setIsLoggedIn } = useAuth();
   const {
     handleSubmit,
     formState: { isSubmitting },
@@ -28,7 +30,10 @@ const SignInScreen = () => {
   const handleFormSubmit = async ({ email, password }) => {
     try {
       await signIn(email, password);
+      const currentUser = await getCurrentUser();
       Alert.alert("Success", "Signed-in successfully.");
+      setUser(currentUser);
+      setIsLoggedIn(true);
       router.replace("/home");
     } catch (error) {
       Alert.alert("Error", "Invalid credentials");

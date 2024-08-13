@@ -14,7 +14,7 @@ import Slider from "./Slider";
 const Header = ({ videos }) => {
   const { searchValue } = useLocalSearchParams();
   const pathname = usePathname();
-  const isSearchScreen = pathname.startsWith("/search");
+  const isHomeScreen = pathname.startsWith("/home");
   const defaultValues = {
     searchValue: searchValue ?? "",
   };
@@ -29,10 +29,17 @@ const Header = ({ videos }) => {
     router.push(`/search/${searchValue}`);
   };
 
+  const getHeader = () => {
+    if (pathname.startsWith("/search")) {
+      return <SearchHeader />;
+    }
+    return <HomeHeader />;
+  };
+
   return (
     <View>
       <View className="space-y-5 p-4 pb-0">
-        {isSearchScreen ? <SearchHeader /> : <HomeHeader />}
+        {getHeader()}
         <View>
           <CustomTextInput
             placeholder="Search for a video topic"
@@ -43,7 +50,7 @@ const Header = ({ videos }) => {
           />
         </View>
       </View>
-      {!isSearchScreen && <Slider videos={videos} />}
+      {isHomeScreen && <Slider videos={videos} />}
     </View>
   );
 };
