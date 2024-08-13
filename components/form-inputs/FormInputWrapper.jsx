@@ -15,7 +15,7 @@ const FormInputWrapper = ({ label, name, children, formState }) => {
         </Text>
       )}
       <View
-        className={`flex-row bg-black-100 rounded-lg h-[58px] items-center justify-between border focus:border-2 ${
+        className={`flex-row bg-black-100 rounded-lg min-h-[58px] items-center justify-between border focus:border-2 ${
           !!errorMsg
             ? "border-red-600"
             : "border-black-200 focus:border-secondary"

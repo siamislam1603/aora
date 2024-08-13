@@ -16,3 +16,10 @@ export const signUpSchema = {
 export const searchSchema = {
   searchValue: yup.string().min(1).required(),
 };
+
+export const videoSchema = {
+  title: yup.string().min(4).required(),
+  video: yup.string().min(4, "video must be uploaded").required(),
+  thumbnail: yup.string().min(4, "thumbnail must be uploaded").required(),
+  prompt: yup.string().min(4).required(),
+};
