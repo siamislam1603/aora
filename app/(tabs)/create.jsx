@@ -1,4 +1,6 @@
 import { yupResolver } from "@hookform/resolvers/yup";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { router } from "expo-router";
 import React from "react";
 import { useForm } from "react-hook-form";
 import { ScrollView, Text, View } from "react-native";
@@ -7,25 +9,42 @@ import * as yup from "yup";
 import CustomButton from "../../components/CustomButton";
 import CustomTextInput from "../../components/form-inputs/CustomTextInput";
 import SingleFileUpload from "../../components/form-inputs/SingleFileUpload";
+import { useAuth } from "../../contexts/GlobalContextProvider";
+import { createVideoPost } from "../../lib/appwrite";
 import { videoSchema } from "../../validations";
 
-const defaultValues = {
-  title: "",
-  thumbnail: "",
-  prompt: "",
-  video: "",
-};
 const CreateScreen = () => {
+  const { user } = useAuth();
+  const queryClient = useQueryClient();
+  const defaultValues = {
+    title: "",
+    thumbnail: "",
+    prompt: "",
+    video: "",
+    creator: user.$id,
+  };
   const formHook = useForm({
     resolver: yupResolver(yup.object(videoSchema)),
     defaultValues,
   });
-  const {
-    handleSubmit,
-    formState: { isSubmitting },
-  } = formHook;
+  const { handleSubmit, reset } = formHook;
+
+  const { isPending, mutate } = useMutation({
+    mutationFn: createVideoPost,
+    onSuccess: (data) => {
+      queryClient.setQueryData(["videos", data.$id], data);
+      queryClient.invalidateQueries(["videos"]);
+      reset(defaultValues);
+      alert("post is created successfully.");
+      router.replace("/home");
+    },
+    onError: (err) => {
+      alert(err.message);
+    },
+  });
+
   const handleFormSubmit = (reqPayload) => {
-    console.log(reqPayload);
+    mutate(reqPayload);
   };
 
   return (
@@ -71,7 +90,7 @@ const CreateScreen = () => {
             title="Submit & Publish"
             buttonStyle="w-full"
             handlePress={handleSubmit(handleFormSubmit)}
-            isLoading={isSubmitting}
+            isLoading={isPending}
           />
         </View>
       </ScrollView>

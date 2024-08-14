@@ -19,7 +19,7 @@ const FormInputWrapper = ({ label, name, children, formState }) => {
           !!errorMsg
             ? "border-red-600"
             : "border-black-200 focus:border-secondary"
-        }`}
+        } overflow-hidden`}
       >
         {children}
       </View>
