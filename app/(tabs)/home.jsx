@@ -1,6 +1,6 @@
-import { useQuery } from "@tanstack/react-query";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
 import React, { createContext } from "react";
-import { FlatList } from "react-native";
+import { FlatList, RefreshControl } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import Header from "../../components/Home/Header";
 import VideoCard from "../../components/Home/VideoCard";
@@ -10,16 +10,36 @@ import { getPopularVideos } from "../../lib/appwrite";
 
 export const HomeContext = createContext();
 const HomePage = () => {
-  const { data: videos, isLoading } = useQuery({
+  const queryClient = useQueryClient();
+  const {
+    data: videos,
+    isLoading,
+    isRefetching,
+  } = useQuery({
     queryKey: ["videos"],
     queryFn: getPopularVideos,
   });
 
   if (isLoading) return <LoadingScreen hideLogo={true} />;
+  const refetchVideos = async () => {
+    await queryClient.refetchQueries({
+      queryKey: ["videos"],
+      type: "active",
+      exact: true,
+    });
+  };
 
   return (
     <SafeAreaView className="h-full bg-primary">
       <FlatList
+        refreshControl={
+          <RefreshControl
+            tintColor="#FF9C01"
+            colors={["#FF9C01"]}
+            refreshing={isRefetching}
+            onRefresh={refetchVideos}
+          />
+        }
         data={videos}
         keyExtractor={(item) => item.$id}
         ListEmptyComponent={() => (
